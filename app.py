@@ -6,8 +6,6 @@
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 
-uploaded= files.upload()
-
 data = pd.read_csv("student_data.csv")
 data.head()
 
