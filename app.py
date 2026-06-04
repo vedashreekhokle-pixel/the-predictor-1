@@ -1,64 +1,44 @@
-
-# ==========================================
-# STUDENT PERFORMANCE PREDICTOR
-# ==========================================
-
+import streamlit as st
 import pandas as pd
 from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error, r2_score
 
+st.title("🎓 Student Performance Predictor")
+
+# Load data
 data = pd.read_csv("student_data.csv")
-data.head()
 
-
+# Train model
 X = data[["age", "studytime", "G1", "G2"]]
 y = data["G3"]
 
-# Train Model 
-print(X_train.shape)
-print(X_test.shape)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# ADD THESE 3 LINES:
-from sklearn.ensemble import RandomForestRegressor
 model = RandomForestRegressor(random_state=42)
 model.fit(X_train, y_train)
 
-predictions = model.predict(X_test)
-print(predictions[:10])
-
-from sklearn.metrics import mean_absolute_error, r2_score
-mae = mean_absolute_error(y_test, predictions)
-r2 = r2_score(y_test, predictions)
-print("MAE:", mae)
-print("R2 Score:", r2)
-
-print("===== STUDENT PERFORMANCE PREDICTOR =====")
-
 # User Input
-age = int(input("Enter Student Age: "))
-studytime = int(input("Enter Study Time (1-4): "))
-G1 = int(input("Enter G1 Grade (0-20): "))
-G2 = int(input("Enter G2 Grade (0-20): "))
+st.subheader("Enter Student Details")
+age = st.number_input("Age", min_value=10, max_value=25, value=16)
+studytime = st.slider("Study Time (1-4)", 1, 4, 2)
+G1 = st.number_input("G1 Grade (0-20)", min_value=0, max_value=20, value=10)
+G2 = st.number_input("G2 Grade (0-20)", min_value=0, max_value=20, value=10)
 
-# Create Input Data
-new_student = pd.DataFrame({
-    "age": [age],
-    "studytime": [studytime],
-    "G1": [G1],
-    "G2": [G2]
-})
+if st.button("Predict"):
+    new_student = pd.DataFrame({
+        "age": [age], "studytime": [studytime],
+        "G1": [G1], "G2": [G2]
+    })
+    predicted_G3 = model.predict(new_student)[0]
+    st.success(f"Predicted Final Grade (G3): {predicted_G3:.2f}")
 
-# Predict
-predicted_G3 = model.predict(new_student)[0]
-
-print("\n----- RESULT -----")
-print(f"Predicted Final Grade (G3): {predicted_G3:.2f}")
-
-# Performance Category
-if predicted_G3 >= 16:
-    print("Performance: Excellent")
-elif predicted_G3 >= 12:
-    print("Performance: Good")
-elif predicted_G3 >= 8:
-    print("Performance: Average")
-else:
-    print("Performance: Needs Improvement")
+    if predicted_G3 >= 16:
+        st.info("Performance: Excellent 🌟")
+    elif predicted_G3 >= 12:
+        st.info("Performance: Good 👍")
+    elif predicted_G3 >= 8:
+        st.info("Performance: Average 📊")
+    else:
+        st.warning("Performance: Needs Improvement 📚")
