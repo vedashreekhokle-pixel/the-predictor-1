@@ -5,7 +5,7 @@
 
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-from google.colab import files
+
 uploaded= files.upload()
 
 data = pd.read_csv("student_data.csv")
