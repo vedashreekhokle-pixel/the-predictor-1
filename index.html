@@ -1,1 +1,40 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Student Performance Predictor</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 500px; margin: 40px auto; padding: 20px; background: #f4f6fb; }
+    h1 { text-align: center; color: #2d5be3; }
+    label { display: block; margin-top: 15px; font-weight: bold; color: #333; }
+    input { width: 100%; padding: 9px; margin-top: 5px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; }
+    button { width: 100%; margin-top: 22px; padding: 12px; background: #2d5be3; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
+    button:hover { background: #1e47c9; }
+    #result { margin-top: 20px; padding: 15px; border-radius: 8px; text-align: center; display: none; font-size: 16px; }
+  </style>
+</head>
+<body>
+
+  <h1>🎓 Student Performance Predictor</h1>
+
+  <label>Age</label>
+  <input type="number" id="age" value="16" min="10" max="25" />
+
+  <label>Study Time (1 = low, 4 = high)</label>
+  <input type="number" id="studytime" value="2" min="1" max="4" />
+
+  <label>G1 Grade (0–20)</label>
+  <input type="number" id="G1" value="10" min="0" max="20" />
+
+  <label>G2 Grade (0–20)</label>
+  <input type="number" id="G2" value="10" min="0" max="20" />
+
+  <button onclick="predict()">Predict</button>
+
+  <div id="result"></div>
+
+  <script>
+    async function predict() {
+      const data = {
+        age:       parseInt(document.getEleme
